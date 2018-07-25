@@ -53,35 +53,35 @@ When the lid is closed I want to disable the laptop display, and activate my two
 You can use `xrandr` to find out which displays are attached and which resolutions they support.
 Then it's very easy to create a small script to put the laptop in lid open/closed mode:
 
-    ```shell
-    #!/bin/bash
+```bash
+#!/bin/bash
 
-    samsung_monitor="DP-2-2"
-    lg_monitor="DP-1"
-    laptop_monitor="eDP-1"
+samsung_monitor="DP-2-2"
+lg_monitor="DP-1"
+laptop_monitor="eDP-1"
 
-    config_closed_lid() {
-        xrandr  --output $laptop_monitor --off \
-                --output $samsung_monitor --auto --primary \
-                --output $lg_monitor --auto --right-of $samsung_monitor
-        feh --bg-scale "/home/alberto/Dropbox/Pictures/Backgrounds/Nature and Landscapes/forest-doggo.jpg"
-    }
+config_closed_lid() {
+    xrandr  --output $laptop_monitor --off \
+            --output $samsung_monitor --auto --primary \
+            --output $lg_monitor --auto --right-of $samsung_monitor
+    feh --bg-scale "/home/alberto/Dropbox/Pictures/Backgrounds/Nature and Landscapes/forest-doggo.jpg"
+}
 
-    config_open_lid() {
-        xrandr  --output $samsung_monitor --off \
-                --output $lg_monitor --off \
-                --output $laptop_monitor --auto --primary
-        feh --bg-scale "/home/alberto/Dropbox/Pictures/Backgrounds/Nature and Landscapes/forest-doggo.jpg"
-    }
+config_open_lid() {
+    xrandr  --output $samsung_monitor --off \
+            --output $lg_monitor --off \
+            --output $laptop_monitor --auto --primary
+    feh --bg-scale "/home/alberto/Dropbox/Pictures/Backgrounds/Nature and Landscapes/forest-doggo.jpg"
+}
 
-    if [ "$1" == "lidclosed" ]; then
-        config_closed_lid
-    elif [ "$1" == "lidopen" ]; then
-        config_open_lid
-    else
-        echo "Unrecognised action: $1"
-    fi
-    ```
+if [ "$1" == "lidclosed" ]; then
+    config_closed_lid
+elif [ "$1" == "lidopen" ]; then
+    config_open_lid
+else
+    echo "Unrecognised action: $1"
+fi
+```
 
 ## Screen lock
 
@@ -163,66 +163,66 @@ Then, in `i3blocks.conf`:
 
 Finally, the two mentioned scripts are `i3blocks-weather.sh`:
 
-    ```shell
-    #!/bin/bash
+```bash
+#!/bin/bash
 
-    metric=1
-    location="Barcelona,Spain"
-    url="http://rss.accuweather.com/rss/liveweather_rss.asp?metric=$metric&locCode=$location"
-    response=$(curl -s "$url")
-    weather=$(echo $response | xml_grep '//rss/channel/item/title' --text_only | grep Currently | awk -F ":" '{print $2 $3}' | cut -c 2-)
-    symbol=""
-    temperature=""
+metric=1
+location="Barcelona,Spain"
+url="http://rss.accuweather.com/rss/liveweather_rss.asp?metric=$metric&locCode=$location"
+response=$(curl -s "$url")
+weather=$(echo $response | xml_grep '//rss/channel/item/title' --text_only | grep Currently | awk -F ":" '{print $2 $3}' | cut -c 2-)
+symbol=""
+temperature=""
 
-    if [[ $weather = *"Sunny"* ]]; then
-        symbol=""
-    elif [[ $weather = *"Cloud"* || $weather = *"Dreary"* || $weather = *"Flurries"* ]]; then
-        symbol=""
-    elif [[ $weather = *"Shower"* || $weather = *"Storm"* || $weather = *"Rain"* ]]; then
-        symbol=""
-    elif [[ $weather = *"Snow"* || $weather = *"Ice"* || $weather = *"Sleet"* ]]; then
-        symbol=""
-    elif [[ $weather = *"Clear"* ]]; then
-        symbol=""
-    fi
+if [[ $weather = *"Sunny"* ]]; then
+    symbol=""
+elif [[ $weather = *"Cloud"* || $weather = *"Dreary"* || $weather = *"Flurries"* ]]; then
+    symbol=""
+elif [[ $weather = *"Shower"* || $weather = *"Storm"* || $weather = *"Rain"* ]]; then
+    symbol=""
+elif [[ $weather = *"Snow"* || $weather = *"Ice"* || $weather = *"Sleet"* ]]; then
+    symbol=""
+elif [[ $weather = *"Clear"* ]]; then
+    symbol=""
+fi
 
-    echo "<span font_desc='FontAwesome'>$symbol</span> $weather <span font_desc='FontAwesome'>$temperature</span>"
-    ```
+echo "<span font_desc='FontAwesome'>$symbol</span> $weather <span font_desc='FontAwesome'>$temperature</span>"
+```
 
 and `i3blocks-battery.sh`:
 
-    ```shell
-    #!/bin/bash
+```bash
+#!/bin/bash
 
-    level=$(cat /sys/class/power_supply/BAT0/capacity)
-    symbol=""
+level=$(cat /sys/class/power_supply/BAT0/capacity)
+symbol=""
 
-    case $level in
-    [0-9])
-        symbol=""
-        ;;
-    1[0-9])
-        symbol=""
-        ;;
-    [2-3][0-9])
-        symbol=""
-        ;;
-    [4-5][0-9])
-        symbol=""
-        ;;
-    [6-7][0-9])
-        symbol=""
-        ;;
-    [8-9][0-9])
-        symbol=""
-        ;;
-    100)
-        symbol=""
-        ;;
-    *)
-        symbol=""
-        ;;
-    esac
+case $level in
+[0-9])
+    symbol=""
+    ;;
+1[0-9])
+    symbol=""
+    ;;
+[2-3][0-9])
+    symbol=""
+    ;;
+[4-5][0-9])
+    symbol=""
+    ;;
+[6-7][0-9])
+    symbol=""
+    ;;
+[8-9][0-9])
+    symbol=""
+    ;;
+100)
+    symbol=""
+    ;;
+*)
+    symbol=""
+    ;;
+esac
 
-    echo "<span font_desc='FontAwesome'>$symbol</span> $level"
-    ```
+echo "<span font_desc='FontAwesome'>$symbol</span> $level"
+```
