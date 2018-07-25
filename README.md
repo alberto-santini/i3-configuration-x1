@@ -53,7 +53,7 @@ When the lid is closed I want to disable the laptop display, and activate my two
 You can use `xrandr` to find out which displays are attached and which resolutions they support.
 Then it's very easy to create a small script to put the laptop in lid open/closed mode:
 
-    ```bash
+    ```shell
     #!/bin/bash
 
     samsung_monitor="DP-2-2"
@@ -163,6 +163,7 @@ Then, in `i3blocks.conf`:
 
 Finally, the two mentioned scripts are `i3blocks-weather.sh`:
 
+    ```shell
     #!/bin/bash
 
     metric=1
@@ -186,9 +187,11 @@ Finally, the two mentioned scripts are `i3blocks-weather.sh`:
     fi
 
     echo "<span font_desc='FontAwesome'>$symbol</span> $weather <span font_desc='FontAwesome'>$temperature</span>"
+    ```
 
 and `i3blocks-battery.sh`:
 
+    ```shell
     #!/bin/bash
 
     level=$(cat /sys/class/power_supply/BAT0/capacity)
@@ -222,3 +225,4 @@ and `i3blocks-battery.sh`:
     esac
 
     echo "<span font_desc='FontAwesome'>$symbol</span> $level"
+    ```
