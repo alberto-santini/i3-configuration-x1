@@ -24,14 +24,50 @@ Just start it in the `config` file launching `dropbox start`.
 
 It can be started simply running `pulseaudio` in the `config` file.
 
+## On-screen notifications
+
+I run the on-screen display daemon dunst which is very lightweight. I just added `exec --no-startup-id dunst` to my `config` file.
+I can then send notifications with the `notify-send` command.
+
 ## Volume keys
 
 Volume on the current sink can be adjusted with [pulseaudio-ctl](https://github.com/graysky2/pulseaudio-ctl).
 It is then just a matter to bind it to the right keys in `config`:
 
-    bindsym XF86AudioRaiseVolume exec --no-startup-id ~/local/bin/pulseaudio-ctl up
-    bindsym XF86AudioLowerVolume exec --no-startup-id ~/local/bin/pulseaudio-ctl down
-    bindsym XF86AudioMute exec --no-startup-id ~/local/bin/pulseaudio-ctl mute
+    bindsym XF86AudioRaiseVolume exec --no-startup-id ~/local/bin/volume-set.sh up
+    bindsym XF86AudioLowerVolume exec --no-startup-id ~/local/bin/volume-set.sh down
+    bindsym XF86AudioMute exec --no-startup-id ~/local/bin/volume-set.sh mute
+
+I wrote a small wrapper around pulseaudio-ctl, so that I can display notifications with dunst.
+The script is:
+
+```bash
+#!/bin/bash
+
+~/local/bin/pulseaudio-ctl $1
+
+read -r -a status <<< "$(~/local/bin/pulseaudio-ctl full-status)"
+volume=${status[0]}
+muted=${status[1]}
+bar=$(seq -s "─" $(($volume / 5)) | sed 's/[0-9]//g')
+icon=""
+
+if [[ $muted = "yes" || $volume = "0" ]]; then
+    icon="/usr/share/icons/elementary-xfce-dark/panel/48/audio-volume-muted.png"
+elif [[ $volume -lt 35 ]]; then
+    icon="/usr/share/icons/elementary-xfce-dark/panel/48/audio-volume-low.png"
+elif [[ $volume -lt 70 ]]; then
+    icon="/usr/share/icons/elementary-xfce-dark/panel/48/audio-volume-medium.png"
+else
+    icon="/usr/share/icons/elementary-xfce-dark/panel/48/audio-volume-high.png"
+fi
+
+if [[ $muted = "yes" ]]; then
+    dunstify -I $icon -r 7414 "    $bar      (muted)"
+else
+    dunstify -I $icon -r 7414 "    $bar      $volume"
+fi
+```
 
 ## Display brightness keys
 
