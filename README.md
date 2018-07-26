@@ -142,7 +142,7 @@ This can be achieved, assuming your system is plagued with the popular `systemd`
     Before=systemd-suspend.service
 
     [Service]
-    User=%I
+    User=alberto
     Type=forking
     Environment=DISPLAY=:0
     ExecStart=/usr/bin/i3lock
