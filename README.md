@@ -2,6 +2,8 @@
 
 Here we use Xubuntu 18.04 as base system.
 
+![](screenshot.png)
+
 ## Running commands at startup
 
 Just add to `~/.config/i3/config` a line with `exec --no-startup-id <command>`, substituting `<command>` with the command you want to run.
