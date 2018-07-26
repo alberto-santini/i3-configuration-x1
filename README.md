@@ -76,6 +76,16 @@ Similar to the volume keys, with the following binding:
     bindsym XF86MonBrightnessUp exec xbacklight -inc 20
     bindsym XF86MonBrightnessDown exec xbacklight -dec 20
 
+For it to work with x1's display and Intel graphic card, however, I had to add the following file: `/usr/share/X11/xorg.conf.d/20-backlight.conf`.
+Its content is quite straightforward and it is used to tell `xbacklight` that it should look into the `intel_backlight` folder of `/sys/class/backlight`:
+
+    Section "Device"
+            Identifier "card0"
+            Driver "intel"
+            Option "Backlight" "intel_backlight"
+            BusID "PCI:0:2:0"
+    EndSection
+
 ## Skip `lightdm`
 
 If you want to start with a framebuffer shell, and run X only when you need it, disable the login manager with `sudo systemctl disable lightdm.service`.
