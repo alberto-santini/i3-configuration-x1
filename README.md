@@ -155,13 +155,19 @@ Then, in `i3blocks.conf`:
     color=#FFAA00
     interval=30
 
+    [volume]
+    command=~/local/bin/i3blocks-volume.sh
+    markup=pango
+    color=#FF00EE
+    interval=5
+
     [time]
     command=echo "<span font_desc='FontAwesome'></span> $(date --rfc-3339=seconds)"
     markup=pango
     color=#2DD500
     interval=5
 
-Finally, the two mentioned scripts are `i3blocks-weather.sh`:
+Finally, the three mentioned scripts are `i3blocks-weather.sh`:
 
 ```bash
 #!/bin/bash
@@ -225,4 +231,25 @@ case $level in
 esac
 
 echo "<span font_desc='FontAwesome'>$symbol</span> $level"
+```
+
+and `i3blocks-volume.sh`:
+
+```bash
+#!/bin/bash
+
+read -r -a status <<< "$(pulseaudio-ctl full-status)"
+volume=${status[0]}
+mute=${status[1]}
+symbol=""
+
+if [[ $volume = "0" || $mute = "yes" ]]; then
+    symbol=""
+elif [[ $volume -lt 60 ]]; then
+    symbol=""
+else
+    symbol=""
+fi
+
+echo "<span font_desc='FontAwesome'>$symbol</span> $volume"
 ```
