@@ -139,9 +139,10 @@ This can be achieved, assuming your system is plagued with the popular `systemd`
 
     [Unit]
     Description=Runs i3lock on system resume from a suspended state
+    Before=systemd-suspend.service
 
     [Service]
-    User=alberto
+    User=%I
     Type=forking
     Environment=DISPLAY=:0
     ExecStart=/usr/bin/i3lock
@@ -149,6 +150,8 @@ This can be achieved, assuming your system is plagued with the popular `systemd`
     [Install]
     WantedBy=sleep.target
     WantedBy=suspend.target
+
+Just remember to enable it with `sudo systemctl enable wakelock`.
 
 ## Bluetooth speaker
 
