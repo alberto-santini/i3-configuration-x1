@@ -252,6 +252,7 @@ and `i3blocks-battery.sh`:
 #!/bin/bash
 
 level=$(cat /sys/class/power_supply/BAT0/capacity)
+charging=$(cat /sys/class/power_supply/BAT0/status)
 symbol=""
 
 case $level in
@@ -280,6 +281,10 @@ case $level in
     symbol=""
     ;;
 esac
+
+if [[ "$charging" = "Charging" ]]; then
+    symbol="$symbol "
+fi
 
 echo "<span font_desc='FontAwesome'>$symbol</span> $level"
 ```
