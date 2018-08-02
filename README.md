@@ -309,3 +309,16 @@ fi
 
 echo "<span font_desc='FontAwesome'>$symbol</span> $volume"
 ```
+
+## Use oh-my-zsh themes in the TTY
+
+When on i3, most terminal emulators have good support for UTF-8 fonts and you can easily use the Powerline fonts to obtain all sort of cool effects with oh-my-zsh.
+To have the same experience on TTY terminals, I simply downloaded the Terminus font pfs files, patched by Powerline.
+They can be found [here](https://github.com/powerline/fonts/tree/master/Terminus/PSF).
+After copying the relevant files (in my case, `ter-powerline-v32*`) to `/usr/share/consolefont`, they become usable in ttys.
+Since I want this to be a user-specific setting, I put the following in my `.zshrc`:
+
+    # Select the Terminus Powerline Font if we are in a TTY
+    case $(tty) in
+        (/dev/tty[1-9]) setfont ter-powerline-v32n;
+    esac
