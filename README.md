@@ -1,6 +1,6 @@
 # Various configuration tricks for i3 on a Thinkpad X1 Carbon 4th gen
 
-Here we use Xubuntu 18.04 as base system.
+Here we use Arch Linux as base system.
 
 ![](screenshot.png)
 
@@ -347,3 +347,9 @@ The script `tty-solarized-dark.sh` is used to set the TTY colours to match the *
         echo -en "\e]PD6c71c4"
         clear
     fi
+
+## Extend dmenu
+
+There is a nice extension of the launcher `dmenu`, which gives you fuzzy file completion capabilities: [dmenu-extended](https://github.com/MarkHedleyJones/dmenu-extended).
+I just installed it with `aur sync dmenu-extended-git && sudo pacman -S dmenu-extended-git`.
+Then, in `i3/config`, add: `bindsym $mod+d exec --no-startup-id dmenu_extended_run` to bind it to Mod+d.
