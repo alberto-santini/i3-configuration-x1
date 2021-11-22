@@ -358,3 +358,7 @@ Then, in `i3/config`, add: `bindsym $mod+d exec --no-startup-id dmenu_extended_r
 
 Enables periodically sending the ATA_TRIM command to the SSD, increasing long-term performance and reducing wear.
 To do so, enable the corresponding service: `sudo systemctl enable fstrim.timer`.
+
+## Reduce the size of log files
+
+Edit `/etc/systemd/journald.conf` changing `SystemMaxUse` to something like `200M`.
