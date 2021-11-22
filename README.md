@@ -353,3 +353,8 @@ The script `tty-solarized-dark.sh` is used to set the TTY colours to match the *
 There is a nice extension of the launcher `dmenu`, which gives you fuzzy file completion capabilities: [dmenu-extended](https://github.com/MarkHedleyJones/dmenu-extended).
 I just installed it with `aur sync dmenu-extended-git && sudo pacman -S dmenu-extended-git`.
 Then, in `i3/config`, add: `bindsym $mod+d exec --no-startup-id dmenu_extended_run` to bind it to Mod+d.
+
+## Enable periodic TRIM for the SSD
+
+Enables periodically sending the ATA_TRIM command to the SSD, increasing long-term performance and reducing wear.
+To do so, enable the corresponding service: `sudo systemctl enable fstrim.timer`.
