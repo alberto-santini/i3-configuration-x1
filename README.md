@@ -362,3 +362,7 @@ To do so, enable the corresponding service: `sudo systemctl enable fstrim.timer`
 ## Reduce the size of log files
 
 Edit `/etc/systemd/journald.conf` changing `SystemMaxUse` to something like `200M`.
+
+## Disable spectre and similar mitigations
+
+Use Linux kernel parameter `mitigations=off` by setting it, e.g., in `/etc/default/grub` using variable `GRB_CMDLINE_LINUX_DEFAULT`.
